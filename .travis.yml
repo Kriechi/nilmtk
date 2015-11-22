@@ -1,41 +1,32 @@
 language: python
+
+sudo: false
+
 python:
   - 2.7
-# Install stuff
-before_install:
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-      wget http://repo.continuum.io/miniconda/Miniconda-3.7.3-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget http://repo.continuum.io/miniconda/Miniconda3-3.7.3-Linux-x86_64.sh -O miniconda.sh;
-    fi
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  # Useful for debugging any issues with conda
-  - conda info -a
-  - sudo apt-get install libhdf5-serial-dev python-dev
-  - sudo apt-get install git
-  - conda install --yes pip
-  - git clone https://github.com/nilmtk/nilm_metadata/
-  - cd nilm_metadata; python setup.py develop; cd ..
+
+cache:
+  directories:
+    - $HOME/.cache/pip
+
+addons:
+  apt:
+    packages:
+      - libhdf5-serial-dev
+      - python-dev
+      - python-scipy
+      - python-numpy
+      - python-psycopg2
+      - libopenblas-dev
+      - liblapack-dev
+      - gfortran
 
 install:
-  - conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy six scikit-learn cython pandas numexpr pytables dateutil matplotlib networkx ipython
-  # Have to use pip for nose-cov because its entry points are not supported by conda yet
-  - sudo rm -rf /dev/shm
-  - sudo ln -s /run/shm /dev/shm
-  #- sudo apt-get build-dep python-psycopg2
-  - pip install psycopg2
-  - pip install git+https://github.com/hmmlearn/hmmlearn.git
-  - pip install nose
-  - pip install sh
-  - pip install coveralls coverage
-  - python setup.py install
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+
 script:
-   - nosetests --with-coverage
-   #- nosetests --with-doctest --with-coverage
+  - nosetests --with-coverage
+
 after_success:
   - coveralls
-

@@ -1,17 +1,4 @@
-cython>=0.19.1
-bottleneck>=0.6.0
-numpy>=1.8.0
-numexpr>=2.2.2
-tables
-pandas>=0.16.2
-matplotlib
-networkx
-scipy
-scikit-learn>=0.14
-ipython
-six
-nose
-coveralls
-coverage
-hmmlearn==0.1.1
--e git+git@github.com:nilmtk/nilm_metadata.git#egg=nilm_metadata-master
+-e git+https://github.com/nilmtk/nilm_metadata.git#egg=nilm_metadata
+-e git+https://github.com/hmmlearn/hmmlearn.git#egg=hmmlearn
+
+-e .[dev]

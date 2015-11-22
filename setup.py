@@ -19,37 +19,9 @@ from os.path import join
 import os
 import sys
 import warnings
-import numpy
 
 """
-CYTHON_DIR = 'nilmtk/disaggregate/feature_detectors'
-
-try:
-    # This trick adapted from 
-    # http://stackoverflow.com/a/4515279/732596
-    from Cython.Build import cythonize
-except ImportError:
-    use_cython = False
-else:
-    use_cython = True
-
-if use_cython:
-    sources = [join(CYTHON_DIR, '_feature_detectors.pyx')]
-    extensions = [Extension("nilmtk.disaggregate._feature_detectors", 
-                            sources=sources,
-                            include_dirs=[numpy.get_include()])]
-    ext_modules = cythonize(extensions)
-else:
-    ext_modules = [
-        Extension("nilmtk.disaggregate._feature_detectors", 
-                  [join(CYTHON_DIR, '_feature_detectors.c')],
-                  include_dirs=[numpy.get_include()]),
-    ]
-
-"""
-
-"""
-Following Segment of this file was taken from the pandas project(https://github.com/pydata/pandas) 
+Following Segment of this file was taken from the pandas project(https://github.com/pydata/pandas)
 """
 # Version Check
 
@@ -102,11 +74,41 @@ short_version = '%s'
 write_version_py()
 # End of Version Check
 
+
+deps = {
+    "bottleneck>=0.6.0",
+    "hmmlearn",
+    "ipython",
+    "matplotlib",
+    "networkx",
+    "nilm_metadata",
+    "numexpr>=2.2.2",
+    "numpy>=1.8.0",
+    "pandas==0.17.1",
+    "scikit-learn>=0.14",
+    "scipy",
+    "six",
+    "tables",
+}
+
+dev_deps = {
+    "sh",
+    "nose",
+    "coveralls",
+    "coverage",
+    "psycopg2",
+    "pbs",
+}
+
+
 setup(
     name='nilmtk',
     version=FULLVERSION,
     packages=find_packages(),
-    install_requires=[],
+    install_requires=list(deps),
+    extras_require={
+        'dev': list(dev_deps),
+    },
     description='Estimate the energy consumed by individual appliances from '
                 'whole-house power meter readings',
     author='nilmtk authors',
